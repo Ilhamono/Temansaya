@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Ulang Tahun!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #fbda61, #ff5acd);
+            overflow: hidden;
+        }
+
+        .container {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            box-shadow: 0 35px 80px rgba(0,0,0,0.15);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .envelope.open {
+            transform: rotateX(180deg) translateY(50px);
+            opacity: 0;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #e0e0e0;
+            clip-path: polygon(0 50%, 50% 0, 100% 50%, 100% 100%, 0 100%);
+            border-radius: 20px;
+            transition: transform 0.5s ease;
+        }
+
+        .envelope:hover .envelope-flap {
+            transform: rotateX(20deg);
+        }
+
+        .card {
+            position: relative;
+            width: 350px;
+            height: 190px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 35px 80px rgba(0,0,0,0.15);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(50px);
+            display: none;
+        }
+
+        .card.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: cardAppear 1s forwards;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card:hover {
+            height: 450px;
+            transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .imgbox {
+            position: absolute;
+            left: 50%;
+            top: -50px;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.35);
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .imgbox {
+            width: 250px;
+            height: 250px;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        .imgbox img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .imgbox:hover img {
+            transform: scale(1.1);
+        }
+
+        .card .content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .card .content .details {
+            padding: 40px;
+            text-align: center;
+            width: 100%;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(150px);
+        }
+
+        .card:hover .content .details {
+            transform: translateY(0px);
+        }
+
+        .card .content .details h2 {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #555;
+            line-height: 1.2em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .content .details h2 {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.2s;
+        }
+
+        .card .content .details h2 span {
+            font-size: 0.75em;
+            font-weight: 500;
+            opacity: 0.5;
+        }
+
+        .card .content .details .data {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .content .details .data {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.4s;
+        }
+
+        .card .content .details .data h3 {
+            font-size: 1em;
+            color: #555;
+            line-height: 1.2em;
+            font-weight: 600;
+        }
+
+        .card .content .details .data h3 span {
+            font-size: 0.85em;
+            font-weight: 400;
+            opacity: 0.5;
+        }
+
+        .card .content .details .actionBtn {
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover .content .details .actionBtn {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
+        .card .content .details .actionBtn button {
+            padding: 10px 30px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            font-weight: 500;
+            background: #ff5f95;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card .content .details .actionBtn button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 95, 149, 0.4);
+        }
+
+        .card .content .details .actionBtn button:nth-child(2) {
+            border: 1px solid #999;
+            color: #999;
+            background: #fff;
+        }
+
+        .card .content .details .actionBtn button:nth-child(2):hover {
+            background: #999;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="envelope" onclick="openEnvelope()">
+            <div class="envelope-flap"></div>
+        </div>
+        
+        <div class="card">
+            <div class="imgbox">
+                <img src="yer.jpg" alt="Birthday Person">
+            </div>
+            <div class="content">
+                <div class="details">
+                    <h2>Muttaqin Zain AL<br><span>Selamat Ulang Tahun✨️✨️</span></h2>
+                    <div class="data">
+                        <h3>Sehat<br><span>Selalu😁</span></h3>
+                        <h3>semoga<br><span>LKS nya Lancar</span></h3>
+                        <h3>jangan<br><span>Galau Trs</span></h3>
+                    </div>
+                    <div class="actionBtn">
+                        <button>Dari</button>
+                        <button>Seseorang</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            const envelope = document.querySelector('.envelope');
+            const card = document.querySelector('.card');
+            
+            envelope.classList.add('open');
+            
+            setTimeout(() => {
+                envelope.style.display = 'none';
+                card.classList.add('show');
+            }, 800);
+        }
+    </script>
+</body>
+</html>
